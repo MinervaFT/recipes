@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Downloads and creates a PKG of the latest version of the Apple's Mastering Tools.
+
+NOTE:
+- This recipe depends on jessepeterson's repo being added for the ModeChanger processor.</string>
+    <key>Identifier</key>
+    <string>com.github.dataJAR-recipes.pkg.Apple Mastering Tools</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Mastering Tools</string>
+    </dict>
+    <key>MinimumVersion</key>
+    <string>0.6.1</string>
+    <key>ParentRecipe</key>
+    <string>com.github.dataJAR-recipes.download.Apple Mastering Tools</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>info_path</key>
+                <string>%RECIPE_CACHE_DIR%/extract/Apple Audio Mastering Tools.dmg/Install Audio Tools.app/Contents/Info.plist</string>
+                <key>plist_keys</key>
+                <dict>
+                    <key>CFBundleIdentifier</key>
+                    <string>bundleid</string>
+                    <key>CFBundleShortVersionString</key>
+                    <string>version</string>
+                </dict>
+            </dict>
+            <key>Processor</key>
+            <string>PlistReader</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgdirs</key>
+                <dict>
+                    <key>Applications</key>
+                    <string>0775</string>
+                    <key>Applications/Utilities</key>
+                    <string>0755</string>
+                    <key>usr</key>
+                    <string>0755</string>
+                    <key>usr/local</key>
+                    <string>0755</string>
+                    <key>usr/local/bin</key>
+                    <string>0755</string>
+                </dict>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/%NAME%/</string>
+                <key>purge_destination</key>
+                <true/>
+            </dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>destination_path</key>
+                <string>%pkgroot%Applications/Utilities/Audio to WAVE 96K Droplet.app</string>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/extract/Apple Audio Mastering Tools.dmg/Droplets/Audio to WAVE 96K Droplet.app</string>
+            </dict>
+            <key>Processor</key>
+            <string>Copier</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>destination_path</key>
+                <string>%pkgroot%Applications/Utilities/Audio to WAVE Droplet.app</string>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/extract/Apple Audio Mastering Tools.dmg/Droplets/Audio to WAVE Droplet.app</string>
+            </dict>
+            <key>Processor</key>
+            <string>Copier</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>destination_path</key>
+                <string>%pkgroot%Applications/Utilities/Master for iTunes Droplet.app</string>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/extract/Apple Audio Mastering Tools.dmg/Droplets/Master for iTunes Droplet.app</string>
+            </dict>
+            <key>Processor</key>
+            <string>Copier</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>destination_path</key>
+                <string>%pkgroot%usr/local/bin/afclip</string>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/extract/Apple Audio Mastering Tools.dmg/Extras/afclip</string>
+            </dict>
+            <key>Processor</key>
+            <string>Copier</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>filename</key>
+                <string>%pkgroot%usr/local/bin/afclip</string>
+                <key>mode</key>
+                <string>a+x</string>
+            </dict>
+            <key>Processor</key>
+            <string>com.github.jessepeterson.munki.UniversalTypeClient6/ModeChanger</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_request</key>
+                <dict>
+                    <key>id</key>
+                    <string>%bundleid%</string>
+                    <key>pkgname</key>
+                    <string>%NAME%</string>
+                    <key>pkgroot</key>
+                    <string>%RECIPE_CACHE_DIR%/%NAME%</string>
+                    <key>version</key>
+                    <string>%version%</string>
+                </dict>
+            </dict>
+            <key>Processor</key>
+            <string>PkgCreator</string>
+        </dict>
+    </array>
+</dict>
+</plist>
